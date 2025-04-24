@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blueprint | Seedspiracy</title>
+
+  <!-- Console + body fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Roboto:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+  /* ===== global tokens ===== */
+  :root{ --matrix:#00ff66; }
+
+  /* ===== layout ===== */
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;}
+  body{
+    background:#000;color:#e5e5e5;font-family:'Roboto',sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;overflow-x:hidden;
+  }
+  .wrapper{position:relative;z-index:1;max-width:640px;padding:2rem;}
+
+  /* ===== hero ===== */
+  h1{
+    font-family:'Share Tech Mono',monospace;
+    font-size:3rem;line-height:1.2;margin:.5rem 0;
+    color:var(--matrix);text-shadow:0 0 6px var(--matrix);
+  }
+  .subhead{font-size:1.2rem;margin:.5rem 0 2rem;}
+
+  /* ===== bullet list ===== */
+  ul{list-style:none;padding:0;margin:1rem 0 2rem;text-align:left;}
+  ul li{margin:.8rem 0;display:flex;align-items:flex-start;}
+  ul li::before{content:'▸';color:var(--matrix);margin-right:.6rem;}
+
+  /* ===== CTA button – Neo style ===== */
+  input[type="email"]{padding:.5rem;width:200px;margin-right:.5rem;}
+
+  .btn{
+    background:transparent;border:2px solid var(--matrix);color:var(--matrix);
+    padding:.9rem 2.2rem;font-family:'Share Tech Mono',monospace;
+    font-weight:bold;letter-spacing:.5px;cursor:pointer;
+    position:relative;overflow:hidden;
+    transition:color .3s ease,box-shadow .3s ease;
+  }
+  .btn::before{
+    content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+    background:var(--matrix);opacity:.17;transform:skewX(-45deg);
+    transition:left .4s ease;
+  }
+  .btn:hover::before{left:200%;}
+  .btn:hover{
+    color:#000;box-shadow:0 0 8px var(--matrix),0 0 16px var(--matrix);
+    animation:glitch .3s steps(2,end);
+  }
+
+  /* ===== footer ===== */
+  footer{margin-top:3rem;font-size:.8rem;color:#555;}
+
+  /* ===== canvas overlay ===== */
+  #matrix{
+    position:fixed;inset:0;width:100%;height:100%;
+    pointer-events:none;z-index:-1;background:transparent;
+  }
+
+  /* ===== glitch keyframes ===== */
+  @keyframes glitch{
+    0%,100%{clip-path:inset(0)}
+    45%{clip-path:inset(5% 0 40% 0)}
+    50%{clip-path:inset(5% 0 20% 0)}
+    55%{clip-path:inset(5% 0 60% 0)}
+  }
+  </style>
+</head>
+<body>
+
+  <!-- Matrix rain canvas -->
+  <canvas id="matrix"></canvas>
+
+  <main class="wrapper">
+    <h1>SEEDS > SYSTEM
+      UPLOAD THE GREEN</h1>
+    <p class="subhead">Cities waste millions sterilizing soil.
+      <strong>You</strong> can flip the script for spare change.</p>
+
+    <ul>
+      <li>TARGET MATRIX — scope blind‑spots, spoof the cameras</li>
+      <li>3 DIY BOMB RECIPES — clay, pulp, charcoal</li>
+      <li>GHOST‑WATERING TACTICS — hydrate &amp; disappear</li>
+      <li>90‑SECOND GETAWAY → out before the sirens blink</li>
+    </ul>
+
+    <form action="/collect" method="POST">
+      <input type="email" name="email" placeholder="you@example.com" required>
+      <button class="btn" type="submit">Get the Manual</button>
+    </form>
+
+    <footer>© 2025 Seedspiracy.ca · Rebel legally — plant responsibly.</footer>
+  </main>
+
+  <!-- Digital‑rain script -->
+  <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+
+    const c = document.getElementById('matrix');
+    const ctx = c.getContext('2d');
+    const font = 18;
+    const chars = '10';
+    const trail = 'rgba(0,0,0,0.08)';
+    let cols, drops;
+
+    function resize(){
+      c.width = innerWidth;
+      c.height = innerHeight;
+      cols = Math.floor(c.width / font);
+      drops = new Array(cols).fill(1);
+    }
+    resize(); addEventListener('resize',resize);
+
+    setInterval(()=>{
+      ctx.fillStyle = trail;
+      ctx.fillRect(0,0,c.width,c.height);
+
+      ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--matrix');
+      ctx.font = font + 'px Share Tech Mono';
+
+      drops.forEach((y,i)=>{
+        ctx.fillText(chars[Math.random()<.5?0:1], i*font, y*font);
+        if(y*font > c.height) drops[i] = 0;
+        drops[i]++;
+      });
+    },50);
+  });
+  </script>
+</body>
+</html>
